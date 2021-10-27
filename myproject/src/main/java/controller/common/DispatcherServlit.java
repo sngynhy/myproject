@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+//
 // FrontController == DispatcherServlit
 // 서블릿 클래스 - 클라이언트의 모든 요청이 현재 서블릿으로 들어옴 -> 요청받은 Aciton값에 따라 어떤 컨트롤러(POJO)를 이용할지 결정 -- HendlertMapping --> POJO를 매핑
 // HendlertMapping 클래스 - POJO를 매핑해주는 "주체"
