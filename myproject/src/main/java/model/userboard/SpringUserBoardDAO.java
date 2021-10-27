@@ -2,14 +2,11 @@ package model.userboard;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-
-import model.member.MemberVO;
 
 class UserBoardRowMapper implements RowMapper<UserBoardVO> {
 	@Override
@@ -32,23 +29,23 @@ class UserBoardRowMapper implements RowMapper<UserBoardVO> {
 
 public class SpringUserBoardDAO {
 	
-	private final String insertSQL = "INSERT INTO BOARD (B_ID, ID, TITLE, CONTENT, B_TYPE, N_ID, C_ID, CATE_ID) VALUES (USERBOARD_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
-	private final String updateSQL = "UPDATE USERBOARD SET TITLE = ?, CONTENT = ?, U_DATE = SYSDATE, B_TYPE = ?, N_ID = ?, C_ID = ?, CATE_ID = ? WHERE B_ID = ?";
+	private final String insertSQL = "INSERT INTO USERBOARD (B_ID, ID, TITLE, CONTENT, B_TYPE, A_ID, N_ID, CATE_ID) VALUES (USERBOARD_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
+	private final String updateSQL = "UPDATE USERBOARD SET TITLE = ?, CONTENT = ?, U_DATE = SYSDATE, B_TYPE = ?, A_ID = ?,N_ID = ?, CATE_ID = ? WHERE B_ID = ?";
 	private final String deleteSQL = "DELETE USERBOARD WHERE B_ID = ?"; // 트랜잭션 처리 -> LIKE 테이블 B_ID로 delete
 	private final String deleteLikeSQL = "DELETE FROM LIKES WHERE B_ID = ?";
-	private final String getBoardListSQL = "SELECT * FROM USERBOARD B_TYPE = ?";
+	private final String getBoardListSQL = "SELECT * FROM USERBOARD WHERE B_TYPE = ?";
 	private final String getBoardSQL = "SELECT * FROM USERBOARD WHERE B_ID = ?";
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
 	public void insertBoard(UserBoardVO vo) {
-		Object[] args = {vo.getId(), vo.getTitle(), vo.getContent(), vo.getB_type(), vo.getN_id(), vo.getC_id(), vo.getCate_id()};
+		Object[] args = {vo.getId(), vo.getTitle(), vo.getContent(), vo.getB_type(), vo.getA_id(), vo.getN_id(), vo.getCate_id()};
 		jdbcTemplate.update(insertSQL, args);
 	}
 	
 	public void updateBoard(UserBoardVO vo) {
-		Object[] args = {vo.getTitle(), vo.getContent(), vo.getB_type(), vo.getN_id(), vo.getC_id(), vo.getCate_id(), vo.getB_id()};
+		Object[] args = {vo.getTitle(), vo.getContent(), vo.getB_type(), vo.getA_id(), vo.getN_id(), vo.getCate_id(), vo.getB_id()};
 		jdbcTemplate.update(updateSQL, args);
 	}
 	
@@ -57,26 +54,39 @@ public class SpringUserBoardDAO {
 		jdbcTemplate.update(deleteLikeSQL, vo.getB_id());
 	}
 	
-	/*public List<UserBoardVO> getBoardList(UserBoardVO vo) {
+	public List<UserBoardVO> getBoardList(UserBoardVO vo) {
 		
-		List<UserBoardVO> result = null;
+		String sql = "";
+		Object[] args = {vo.getB_type()};
 		
-		if (vo.getKeyword() == null) { // 게시글 전체 목록
-			return jdbcTemplate.query(getBoardListSQL + " order by wdate desc", new UserBoardRowMapper());
-		} else if (vo.getCondition().equals("title")) {
-			Object[] args = {"%"+vo.getKeyword()+"%"};
-			result = jdbcTemplate.query(getBoardListSQL + " where title like ? order by wdate desc", args, new UserBoardRowMapper());
-		} else if (vo.getCondition().equals("content")) {
-			Object[] args = {"%"+vo.getKeyword()+"%"};
-			result = jdbcTemplate.query(getBoardListSQL + " where content like ? order by wdate desc", args, new UserBoardRowMapper());
-		} else if (vo.getCondition().equals("id")) {
-			Object[] args = {"%"+vo.getKeyword()+"%"};
-			result = jdbcTemplate.query(getBoardListSQL + " where id like ? order by wdate desc", args, new UserBoardRowMapper());
+		if (vo.getB_type().equals("info")) { // 정보 공유 게시글
+			sql += getBoardListSQL + "AND CATE_ID = ?";
+			args[1] = vo.getCate_id();
+			if (vo.getKeyword() != null) { // 특정 keyword로 조회
+				sql += " AND ? LIKE ?";
+				args[2] = vo.getCondition();
+				args[3] = "%"+vo.getKeyword()+"%";
+			}
+		} else if (vo.getB_type().equals("ask")) { // 자유 질문 게시글
+			if (vo.getKeyword() != null) {
+				sql += " AND ? LIKE ?";
+				args[1] = vo.getCondition();
+				args[2] = "%"+vo.getKeyword()+"%";
+			}
+		} else if (vo.getB_type().equals("review")) { // 여행 후기 게시글
+			sql += getBoardListSQL + "AND N_ID = ?";
+			args[1] = vo.getN_id();
+			if (vo.getKeyword() != null) {
+				sql += " AND ? LIKE ?";
+				args[2] = vo.getCondition();
+				args[3] = "%"+vo.getKeyword()+"%";
+			}
 		}
-		return result;
-	}*/
+		sql += " ORDER BY B_DATE DESC";
+		return jdbcTemplate.query(sql, args, new UserBoardRowMapper());
+	}
 	
-	public UserBoardVO getBoard(UserBoardVO vo) { // 사용자가 선택한 글 보기
+	public UserBoardVO getBoard(UserBoardVO vo) { // 선택한 글 보기
 		Object[] args = {vo.getB_id()};
 		return jdbcTemplate.queryForObject(getBoardSQL, args, new UserBoardRowMapper());
 	}

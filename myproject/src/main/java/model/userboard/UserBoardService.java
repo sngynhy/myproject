@@ -3,9 +3,9 @@ package model.userboard;
 import java.util.List;
 
 public interface UserBoardService {
-	void insertBoard(UserBoardVO invo);
-	void updateBoard(UserBoardVO invo);
-	void deleteBoard(UserBoardVO invo);
-	List<UserBoardVO> getBoardList(UserBoardVO invo);
-	UserBoardVO getBoard(UserBoardVO invo);
+	void insertBoard(UserBoardVO vo);
+	void updateBoard(UserBoardVO vo);
+	void deleteBoard(UserBoardVO vo);
+	List<UserBoardVO> getBoardList(UserBoardVO vo);
+	UserBoardVO getBoard(UserBoardVO vo);
 }

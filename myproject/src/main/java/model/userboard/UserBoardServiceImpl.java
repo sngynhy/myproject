@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class UserBoardServiceImpl implements UserBoardService {
 	
 	@Autowired // 의존성 주입
-	private BoardDAO boardDAO;
+	private SpringUserBoardDAO boardDAO;
 	
 	@Override
 	public void insertBoard(UserBoardVO invo) {

@@ -15,16 +15,14 @@ public class SpringReplyDAO {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	public void insertReply(ReplyVO vo) {
+	public void insertReply(ReplyVO vo) { ////// 트랜잭션 처리 필요
 		jdbcTemplate.update(insertSQL, vo.getB_id(), vo.getId(), vo.getContent());
 		jdbcTemplate.update(updateBoardSQL, "+", vo.getB_id());
 	}
-	
-	public void deleteReply(ReplyVO vo) {
+	public void deleteReply(ReplyVO vo) { ////// 트랜잭션 처리 필요
 		jdbcTemplate.update(deleteSQL, vo.getB_id());
 		jdbcTemplate.update(updateBoardSQL, "-", vo.getB_id());
 	}
-	
 	public void updateReply(ReplyVO vo) {
 		jdbcTemplate.update(updateSQL, vo.getContent(), vo.getR_id());
 	}

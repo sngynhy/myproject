@@ -18,8 +18,8 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.checkID(id);
 	}
 	@Override
-	public MemberVO login(MemberVO vo) {
-		return memberDAO.login(vo);
+	public MemberVO getMember(MemberVO vo) {
+		return memberDAO.getMember(vo);
 	}
 	@Override
 	public void updateMember(MemberVO vo) {

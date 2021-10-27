@@ -1,6 +1,5 @@
 package model.userboard;
 
-
 public class UserBoardVO {
 	
 	private int b_id; // 1001부터 자동 +1
