@@ -5,23 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service("boardService")
+@Service("userboardService")
 public class UserBoardServiceImpl implements UserBoardService {
 	
 	@Autowired // 의존성 주입
 	private SpringUserBoardDAO boardDAO;
 	
 	@Override
-	public void insertBoard(UserBoardVO invo) {
-		boardDAO.insertBoard(invo);
+	public int insertBoard(UserBoardVO invo) {
+		return boardDAO.insertBoard(invo);
 	}
 	@Override
-	public void updateBoard(UserBoardVO invo) {
-		boardDAO.updateBoard(invo);
+	public int updateBoard(UserBoardVO invo) {
+		return boardDAO.updateBoard(invo);
 	}
 	@Override
-	public void deleteBoard(UserBoardVO invo) {
-		boardDAO.deleteBoard(invo);
+	public int deleteBoard(UserBoardVO invo) {
+		return boardDAO.deleteBoard(invo);
 	}
 	@Override
 	public List<UserBoardVO> getBoardList(UserBoardVO invo) {

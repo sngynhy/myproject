@@ -1,5 +1,7 @@
 package model.category;
 
-public interface CategoryService {
+import java.util.List;
 
+public interface CategoryService {
+	List<CategoryVO> getCategoryList();
 }

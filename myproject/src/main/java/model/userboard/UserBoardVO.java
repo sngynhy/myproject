@@ -101,5 +101,12 @@ public class UserBoardVO {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	@Override
+	public String toString() {
+		return "UserBoardVO [b_id=" + b_id + ", id=" + id + ", title=" + title + ", content=" + content + ", r_cnt="
+				+ r_cnt + ", like_cnt=" + like_cnt + ", b_date=" + b_date + ", u_date=" + u_date + ", b_type=" + b_type
+				+ ", a_id=" + a_id + ", n_id=" + n_id + ", cate_id=" + cate_id + ", condition=" + condition
+				+ ", keyword=" + keyword + "]";
+	}
 	
 }

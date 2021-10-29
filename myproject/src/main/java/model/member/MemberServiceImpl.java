@@ -10,8 +10,8 @@ public class MemberServiceImpl implements MemberService {
 	private SpringMemberDAO memberDAO;
 	
 	@Override
-	public void insertMember(MemberVO vo) {
-		memberDAO.insertMember(vo);
+	public int insertMember(MemberVO vo) {
+		return memberDAO.insertMember(vo);
 	}
 	@Override
 	public boolean checkID(String id) {
@@ -22,11 +22,11 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.getMember(vo);
 	}
 	@Override
-	public void updateMember(MemberVO vo) {
-		memberDAO.updateMember(vo);
+	public int updateMember(MemberVO vo) {
+		return memberDAO.updateMember(vo);
 	}
 	@Override
-	public void deleteMember(MemberVO vo) {
-		memberDAO.deleteMember(vo);
+	public int deleteMember(MemberVO vo) {
+		return memberDAO.deleteMember(vo);
 	}
 }

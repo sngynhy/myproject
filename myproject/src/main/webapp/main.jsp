@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="mytag"%>
 <!DOCTYPE HTML>
 <!--
 	Editorial by HTML5 UP
@@ -8,10 +10,11 @@
 -->
 <html>
 	<head>
-		<title>Editorial by HTML5 UP</title>
+		<title>WANDERIZM</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
+		<script src="http://maps.google.com/maps/api/js?key=AIzaSyDTqCPFibwMdZmoT1o42y55-xrzQ-x0oV4&region=kr"></script>
 	</head>
 	<body class="is-preload">
 
@@ -24,10 +27,8 @@
 
 							<!-- Header -->
 								<header id="header">
-									<a href="index.jsp" class="logo"><strong>Editorial</strong> by HTML5 UP</a>
-									<ul class="icons">
-										<li><a href="login.jsp" class="button">LOGIN</a></li>
-									</ul>
+									<a href="#" class="logo"><strong>WANDERIZM</strong></a>
+									<mytag:login />
 								</header>
 
 							<!-- Banner -->
@@ -44,7 +45,9 @@
 										</ul>
 									</div>
 									<span class="image object">
-										<img src="images/pic10.jpg" alt="" />
+									<!-- 지도 출력 -->
+										<!-- <img src="images/pic10.jpg" alt="" /> -->
+										<div id="map" style="width: 100%; height: 100%;"></div>
 									</span>
 								</section>
 
@@ -63,97 +66,7 @@
 					</div>
 
 				<!-- Sidebar -->
-					<div id="sidebar">
-						<div class="inner">
-
-							<!-- Search -->
-								<section id="search" class="alt">
-									<form method="post" action="#">
-										<input type="text" name="query" id="query" placeholder="Search" />
-									</form>
-								</section>
-
-							<!-- Menu -->
-								<nav id="menu">
-									<header class="major">
-										<h2>Menu</h2>
-									</header>
-									<ul>
-										<li><a href="index.jsp">Homepage</a></li>
-										<li><a href="generic.jsp">Generic</a></li>
-										<li><a href="elements.jsp">Elements</a></li>
-										<li>
-											<span class="opener">Submenu</span>
-											<ul>
-												<li><a href="#">Lorem Dolor</a></li>
-												<li><a href="#">Ipsum Adipiscing</a></li>
-												<li><a href="#">Tempus Magna</a></li>
-												<li><a href="#">Feugiat Veroeros</a></li>
-											</ul>
-										</li>
-										<li><a href="#">Etiam Dolore</a></li>
-										<li><a href="#">Adipiscing</a></li>
-										<li>
-											<span class="opener">Another Submenu</span>
-											<ul>
-												<li><a href="#">Lorem Dolor</a></li>
-												<li><a href="#">Ipsum Adipiscing</a></li>
-												<li><a href="#">Tempus Magna</a></li>
-												<li><a href="#">Feugiat Veroeros</a></li>
-											</ul>
-										</li>
-										<li><a href="#">Maximus Erat</a></li>
-										<li><a href="#">Sapien Mauris</a></li>
-										<li><a href="#">Amet Lacinia</a></li>
-									</ul>
-								</nav>
-
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Ante interdum</h2>
-									</header>
-									<div class="mini-posts">
-										<article>
-											<a href="#" class="image"><img src="images/pic07.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/pic08.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-										<article>
-											<a href="#" class="image"><img src="images/pic09.jpg" alt="" /></a>
-											<p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore aliquam.</p>
-										</article>
-									</div>
-									<ul class="actions">
-										<li><a href="#" class="button">More</a></li>
-									</ul>
-								</section>
-
-							<!-- Section -->
-								<section>
-									<header class="major">
-										<h2>Get in touch</h2>
-									</header>
-									<p>Sed varius enim lorem ullamcorper dolore aliquam aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin sed aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>
-									<ul class="contact">
-										<li class="icon solid fa-envelope"><a href="#">information@untitled.tld</a></li>
-										<li class="icon solid fa-phone">(000) 000-0000</li>
-										<li class="icon solid fa-home">1234 Somewhere Road #8254<br />
-										Nashville, TN 00000-0000</li>
-									</ul>
-								</section>
-
-							<!-- Footer -->
-								<footer id="footer">
-									<p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-								</footer>
-
-						</div>
-					</div>
-
+					<mytag:sidebar />
 			</div>
 
 		<!-- Scripts -->
@@ -164,4 +77,21 @@
 			<script src="assets/js/main.js"></script>
 
 	</body>
+	
+	<script type="text/javascript">
+		var map;
+		function initMap() { // map 생성 메소드
+			var ll = {lat:47.585782536579124, lng:14.073004922524557}; // lat: 위도, lng: 경도
+			map = new google.maps.Map(  // Map(위치, 출력 값) 어디에 무엇을 보여줄 것인지 파라미터로 작성
+						document.getElementById("map"),  // 위치
+						{zoom:5, center:ll} // 출력 값 - ll를 center값으로 설정
+					);
+			new google.maps.Marker( // 지도상에 마커 띄우기
+				{position:ll, // 마커 위치
+					map: map, // 지도
+					label: "현재위치"} // 설명
+			);
+		}
+		initMap(); // 선언과 함께 맵 생성
+	</script>
 </html>
