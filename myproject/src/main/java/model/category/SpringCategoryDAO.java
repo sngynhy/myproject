@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-class CategoryRowMapper implements RowMapper<CategoryVO> {
+class categoryRowMapper implements RowMapper<CategoryVO> {
 	@Override
 	public CategoryVO mapRow(ResultSet rs, int rowNum) throws SQLException {
 		CategoryVO vo = new CategoryVO();
@@ -22,12 +22,12 @@ class CategoryRowMapper implements RowMapper<CategoryVO> {
 @Repository
 public class SpringCategoryDAO {
 	
-	private String getCategoryListSQL = "insert into category";
+	private String getCategoryListSQL = "SELECT * FROM CATEGORY";
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
 	public List<CategoryVO> getCategoryList() {
-		return jdbcTemplate.query(getCategoryListSQL, new CategoryRowMapper());
+		return jdbcTemplate.query(getCategoryListSQL, new categoryRowMapper());
 	}
 }

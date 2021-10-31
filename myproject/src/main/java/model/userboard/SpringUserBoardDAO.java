@@ -2,6 +2,7 @@ package model.userboard;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,83 +60,64 @@ public class SpringUserBoardDAO {
 	public List<UserBoardVO> getBoardList(UserBoardVO vo) {
 		
 		String sql = "";
-		List<UserBoardVO> result = null;
+		ArrayList<String> params = new ArrayList<String>();
+		int size = 0; // args 배열 길이
 		
 		if (vo.getB_type().equals("info")) { // 정보 공유 게시글
 			sql += getBoardListSQL + "AND CATE_ID = ?";
-			Object[] args = {vo.getB_type(), vo.getCate_id()};
-			result = jdbcTemplate.query(sql, args, new UserBoardRowMapper());
-			if (vo.getKeyword() != null) { // 특정 keyword로 조회
-				sql += " AND ? LIKE ?";
-				args[2] = vo.getCondition();
-				args[3] = "%"+vo.getKeyword()+"%";
-			}
-		} else if (vo.getB_type().equals("ask")) { // 자유 질문 게시글
-			sql += getBoardListSQL + " ORDER BY B_DATE DESC";
-			Object[] args = {vo.getB_type()};
-			result = jdbcTemplate.query(sql, args, new UserBoardRowMapper());
+			params.add(vo.getB_type());
+			params.add(vo.getCate_id());
 			if (vo.getKeyword() != null) {
-				sql += " AND ? LIKE ?";
-				args[1] = vo.getCondition();
-				args[2] = "%"+vo.getKeyword()+"%";
-			}
-		} else if (vo.getB_type().equals("review")) { // 여행 후기 게시글
-			sql += getBoardListSQL + "AND N_ID = ?";
-			Object[] args = {vo.getB_type(), vo.getN_id()};
-			args[1] = vo.getN_id();
-			result = jdbcTemplate.query(sql, args, new UserBoardRowMapper());
-			if (vo.getKeyword() != null) {
-				sql += " AND ? LIKE ?";
-				args[2] = vo.getCondition();
-				args[3] = "%"+vo.getKeyword()+"%";
-			}
-		}
-		return result;
-//		sql += " ORDER BY B_DATE DESC";
-//		System.out.println(sql);
-//		return jdbcTemplate.query(sql, args, new UserBoardRowMapper());
-	}
-
-	/*public List<UserBoardVO> getBoardList(UserBoardVO vo) {
-		
-		String sql = "";
-		Object[] args = new Object[3];
-		args[0] = vo.getB_type();
-		System.out.println("args[0]: " + args[0]);
-		if (vo.getB_type().equals("info")) { // 정보 공유 게시글
-			sql += getBoardListSQL + "AND CATE_ID = ?";
-//			System.out.println("cate_id : " + vo.getCate_id());
-			args[1] = vo.getCate_id();
-			System.out.println("idx[1]: " + args[1]);
-			if (vo.getKeyword() != null) { // 특정 keyword로 조회
-				sql += " AND ? LIKE ?";
-				args[2] = vo.getCondition();
-				args[3] = "%"+vo.getKeyword()+"%";
+				if (vo.getCondition().equals("title")) {
+					sql += " AND TITLE LIKE ?";
+				} else if (vo.getCondition().equals("content")) {
+					sql += " AND CONTENT LIKE ?";
+				} else if (vo.getCondition().equals("id")) {
+					sql += " AND ID LIKE ?";
+				}
+				params.add("%"+vo.getKeyword()+"%");
 			}
 		} else if (vo.getB_type().equals("ask")) { // 자유 질문 게시글
 			sql += getBoardListSQL;
+			params.add(vo.getB_type());
 			if (vo.getKeyword() != null) {
-				sql += " AND ? LIKE ?";
-				args[1] = vo.getCondition();
-				args[2] = "%"+vo.getKeyword()+"%";
+				if (vo.getCondition().equals("title")) {
+					sql += " AND TITLE LIKE ?";
+				} else if (vo.getCondition().equals("content")) {
+					sql += " AND CONTENT LIKE ?";
+				} else if (vo.getCondition().equals("id")) {
+					sql += " AND ID LIKE ?";
+				}
+				params.add("%"+vo.getKeyword()+"%");
 			}
 		} else if (vo.getB_type().equals("review")) { // 여행 후기 게시글
 			sql += getBoardListSQL + "AND N_ID = ?";
-			args[1] = vo.getN_id();
+			params.add(vo.getB_type());
+			params.add(vo.getN_id());
 			if (vo.getKeyword() != null) {
-				sql += " AND ? LIKE ?";
-				args[2] = vo.getCondition();
-				args[3] = "%"+vo.getKeyword()+"%";
+				if (vo.getCondition().equals("title")) {
+					sql += " AND TITLE LIKE ?";
+				} else if (vo.getCondition().equals("content")) {
+					sql += " AND CONTENT LIKE ?";
+				} else if (vo.getCondition().equals("id")) {
+					sql += " AND ID LIKE ?";
+				}
+				params.add("%"+vo.getKeyword()+"%");
 			}
 		}
+		
 		sql += " ORDER BY B_DATE DESC";
-		System.out.println(sql);
-		for (int i=0; i<args.length; i++) {
-			System.out.println(i + " : " + args[i]);
+		Object[] args = new Object[params.size()];
+		for (String temp : params) {
+			args[size++] = temp;
 		}
+		/*System.out.println(sql);
+		for(int i=0; i<args.length; i++) {
+			System.out.println(args[i]);
+		}*/
 		return jdbcTemplate.query(sql, args, new UserBoardRowMapper());
-	}*/
-	
+	}
+
 	public UserBoardVO getBoard(UserBoardVO vo) { // 선택한 글 보기
 		Object[] args = {vo.getB_id()};
 		return jdbcTemplate.queryForObject(getBoardSQL, args, new UserBoardRowMapper());

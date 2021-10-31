@@ -1,4 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div id="sidebar">
 	<div class="inner">
 
@@ -14,24 +15,22 @@
 			<header class="major">
 				<h2>Menu</h2>
 			</header>
-			<ul>
+			<ul>		
 				<li><a href="index.jsp">FOR WANDERIER</a></li>
 				<li><span class="opener">여행 정보 게시판</span>
-					<!-- <ul>
-						<li><a href="getBoardList.do?b_type=info&cate_id=tf">교통 정보</a></li>
-						<li><a href="getBoardList.do?b_type=info&cate_id=rm">숙소 정보</a></li>
-						<li><a href="getBoardList.do?b_type=info&cate_id=rt">맛집 정보</a></li>
-					</ul> -->
+					<ul>
+						<c:forEach var="v" items="${sidebarData.cateData}">
+						<li><a href="getBoardList.do?b_type=info&cate_id=${v.cate_id}">${v.category}</a></li>
+						</c:forEach>
+					</ul>
 				</li>
 				<li><a href="getBoardList.do?b_type=ask">자유 질문 게시판</a></li>
 				<li><span class="opener">여행 후기 게시판</span>
-					<!-- <ul>
-						<li><a href="getBoardList.do">프랑스</a></li>
-						<li><a href="getBoardList.do">영국</a></li>
-						<li><a href="getBoardList.do">이탈리아</a></li>
-						<li><a href="getBoardList.do">독일</a></li>
-						<li><a href="getBoardList.do">스페인</a></li>
-					</ul> -->
+					<ul>
+						<c:forEach var="v" items="${sidebarData.nationData}">
+						<li><a href="getBoardList.do?b_type=review&n_id=${v.n_id}">${v.nation}</a></li>
+						</c:forEach>
+					</ul>
 				</li>
 				<li><a href="generic.jsp">generic</a></li>
 				<li><a href="elements.jsp">element</a></li>

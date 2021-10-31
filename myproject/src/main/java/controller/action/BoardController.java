@@ -3,26 +3,58 @@ package controller.action;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import model.area.AreaService;
+import model.area.AreaVO;
+import model.category.CategoryService;
+import model.category.CategoryVO;
+import model.nation.NationService;
+import model.nation.NationVO;
 import model.userboard.UserBoardService;
 import model.userboard.UserBoardVO;
 
 @Controller
-public class UserBoardController {
+public class BoardController {
 	
 	@Autowired
 	private UserBoardService boardService;
+	@Autowired
+	private CategoryService categoryService; // 교통, 숙소, 맛집 등
+	@Autowired
+	private NationService nationService; // 파리, 영국, 이탈리아 등
+	@Autowired
+	private AreaService areaService; // 유럽, 아시아 등
+	
+	@ModelAttribute("sidebarData")
+	public Model getSideBarData(Model model) {
+		List<CategoryVO> cateData = categoryService.getCategoryList();
+		model.addAttribute("cateData", cateData);
+		List<NationVO> nationData = nationService.getNavtionList();
+		model.addAttribute("nationData", nationData);
+		List<AreaVO> areaData = areaService.getAreaList();
+		model.addAttribute("areaDate", areaData);
+		return model;
+	}
+	
+	@RequestMapping("/main.do")
+	public String main(Model model) {
+//		getSideBarData(model);
+		return "main.jsp";
+	}
 	
 	@RequestMapping("/getBoardList.do")
 	public String getBoardList(UserBoardVO vo, Model model) throws Exception {
+		
 		List<UserBoardVO> datas = boardService.getBoardList(vo); // 게시글 전체 조회
 		model.addAttribute("datas", datas); // 정보 저장 - setAttribute의 역할
+		model.addAttribute("b_type", vo.getB_type());
+		model = getSideBarData(model);
+		
 		return "getBoardList.jsp";
 	}
 	

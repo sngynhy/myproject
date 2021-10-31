@@ -33,51 +33,76 @@
 							<!-- Section -->
 								<section style="padding-top: 35px;">
 									<header class="major">
-										<h3>자유 질문 게시판</h3>
+										<mytag:category />
 									</header>
-									<div class="table-wrapper">
-											<table>
-												<thead>
+									<div class="table-wrapper"> <!-- style="height: 487.36px;" -->
+										<table>
+											<thead>
+												<tr>
+													<th style="text-align: center;">No.</th>
+													<th style="width: 50%; text-align: center;">제목</th>
+													<th style="text-align: center;">작성자</th>
+													<th style="text-align: center;">작성날짜</th>
+													<th style="width: 10%; text-align: center;">♡</th>
+												</tr>
+											</thead>
+											<tbody>
+											<c:choose>
+												<c:when test="${empty datas}">
 													<tr>
-														<th style="text-align: center;">No.</th>
-														<th style="width: 50%; text-align: center;">제목</th>
-														<th style="text-align: center;">작성자</th>
-														<th style="text-align: center;">작성날짜</th>
-														<th style="width: 10%; text-align: center;">♡</th>
+														<td colspan="5" align="center">등록된 게시글이 없습니다.</td>
 													</tr>
-												</thead>
-												<tbody>
-												<c:choose>
-													<c:when test="${empty datas}">
+												</c:when>
+												<c:otherwise>
+													<c:forEach var="v" items="${datas}">
 														<tr>
-															<td colspan="5" align="center">등록된 게시글이 없습니다.</td>
+															<td style="text-align: center;">${v.b_id}</td>
+															<td style="width: 50%; text-align: center;"><a href="getBoard.do?b_id=${v.b_id}">${v.title}</a> [${v.r_cnt}]</td>
+															<td style="text-align: center;">${v.id}</td>
+															<td style="text-align: center;">${v.b_date}</td>
+															<td style="width: 10%; text-align: center;">${v.like_cnt}</td>
 														</tr>
-													</c:when>
-													<c:otherwise>
-														<c:forEach var="v" items="${datas}">
-															<tr>
-																<td style="text-align: center;">${v.b_id}</td>
-																<td style="width: 50%; text-align: center;"><a href="getBoard.do?b_id=${v.b_id}">${v.title}</a> [${v.r_cnt}]</td>
-																<td style="text-align: center;">${v.id}</td>
-																<td style="text-align: center;">${v.b_date}</td>
-																<td style="width: 10%; text-align: center;">${v.like_cnt}</td>
-															</tr>
-														</c:forEach>
-													</c:otherwise>
-												</c:choose>
-												</tbody>
-												<c:choose>
-													<c:when test="${!empty sessionID}">
-														<tfoot>
-															<tr align="right">
-																<td colspan="4"></td>
-																<td><a href="insertBoard.jsp" class="button">글쓰기</a></td>
-															</tr>
-														</tfoot>
-													</c:when>
-												</c:choose>
-											</table>
+													</c:forEach>
+												</c:otherwise>
+											</c:choose>
+											</tbody>
+											<c:choose>
+												<c:when test="${!empty sessionID}">
+													<tfoot>
+														<tr align="right">
+															<td colspan="4"></td>
+															<td><a href="insertBoard.jsp" class="button">글쓰기</a></td>
+														</tr>
+													</tfoot>
+												</c:when>
+											</c:choose>
+										</table>
 									</div>
+									
+									<!-- 페이징 -->
+									<ul class="pagination" style="text-align: center;">
+										<li><span class="button disabled">Prev</span></li>
+										<li><a href="#" class="page active">1</a></li>
+										<li><a href="#" class="page">2</a></li>
+										<li><a href="#" class="page">3</a></li>
+										<li><span>&hellip;</span></li>
+										<li><a href="#" class="page">8</a></li>
+										<li><a href="#" class="page">9</a></li>
+										<li><a href="#" class="page">10</a></li>
+										<li><a href="#" class="button">Next</a></li>
+									</ul>
+									<!-- 검색 -->
+									<section id="search" class="alt">
+									<form method="post" action="getBoardList.do">
+										<select name="condition" id="condition" style="width: 12%; float=left;">
+											<option value="title">제목</option>
+											<option value="content">내용</option>
+											<option value="id">작성자</option>
+										</select>
+										<input type="hidden" name="b_type" value="ask">
+										<input type="text" name="keyword" id="keyword" placeholder="Search" />
+									</form>
+									</section>
 								</section>
 							</div>
 						</div>
