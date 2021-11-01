@@ -71,7 +71,15 @@
 													<tfoot>
 														<tr align="right">
 															<td colspan="4"></td>
-															<td><a href="insertBoard.jsp" class="button">글쓰기</a></td>
+															<c:if test="${b_type eq 'info'}">
+																<td><a href="insertBoardTry.do?b_type=info&cate_id=${cate_id}" class="button">글쓰기</a></td>
+															</c:if>
+															<c:if test="${b_type eq 'ask'}">
+																<td><a href="insertBoardTry.do?b_type=ask" class="button">글쓰기</a></td>
+															</c:if>
+															<c:if test="${b_type eq 'review'}">
+																<td><a href="insertBoardTry.do?b_type=review&a_id=${a_id}&n_id=${n_id}" class="button">글쓰기</a></td>
+															</c:if>
 														</tr>
 													</tfoot>
 												</c:when>
@@ -91,15 +99,18 @@
 										<li><a href="#" class="page">10</a></li>
 										<li><a href="#" class="button">Next</a></li>
 									</ul>
+									
 									<!-- 검색 -->
 									<section id="search" class="alt">
-									<form method="post" action="getBoardList.do">
-										<select name="condition" id="condition" style="width: 12%; float=left;">
+									<form method="get" action="getBoardList.do">
+										<select name="condition" id="condition" style="width: 12%;">
 											<option value="title">제목</option>
 											<option value="content">내용</option>
 											<option value="id">작성자</option>
 										</select>
-										<input type="hidden" name="b_type" value="ask">
+										<input type="hidden" name="b_type" value="${b_type}">
+										<input type="hidden" name="cate_id" value="${cate_id}">
+										<input type="hidden" name="n_id" value="${n_id}">
 										<input type="text" name="keyword" id="keyword" placeholder="Search" />
 									</form>
 									</section>
@@ -119,4 +130,16 @@
 			<script src="assets/js/main.js"></script>
 
 	</body>
+	<script>
+		function changeCateId(obj) {
+			var selectValue = obj.value;
+			/* console.log(selectValue); */
+			window.location.href="getBoardList.do?b_type=info&cate_id=" + selectValue;
+		}
+		function changeN_Id(obj) {
+			var selectValue = obj.value;
+			/* console.log(selectValue); */
+			window.location.href="getBoardList.do?b_type=review&n_id=" + selectValue;
+		}
+	</script>
 </html>

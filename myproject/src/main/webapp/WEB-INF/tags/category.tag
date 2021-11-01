@@ -4,9 +4,14 @@
 	<c:when test="${b_type eq 'info'}">
 		<h3>정보 공유 게시판</h3>
 		<form method="post" action="getBoardList.do">
-			<select name="cate_id">
+			<select name="cate_id" onchange="changeCateId(this)">
 			<c:forEach var="v" items="${sidebarData.cateData}">
-				<option value="${v.cate_id}">${v.category}</option>
+				<c:if test="${cate_id eq v.cate_id}">
+					<option value="${v.cate_id}" selected>${v.category}</option>
+				</c:if>
+				<c:if test="${cate_id ne v.cate_id}">
+					<option value="${v.cate_id}">${v.category}</option>
+				</c:if>
 			</c:forEach>
 			</select>
 		</form>
@@ -17,9 +22,14 @@
 	<c:when test="${b_type eq 'review'}">
 		<h3>여행 후기 게시판</h3>
 		<form method="post" action="getBoardList.do">
-			<select name="n_id">
+			<select name="n_id" onchange="changeN_Id(this)">
 			<c:forEach var="v" items="${sidebarData.nationData}">
-				<option value="${v.n_id}">${v.nation}</option>
+				<c:if test="${n_id eq v.n_id}">
+					<option value="${v.n_id}" selected>${v.nation}</option>
+				</c:if>
+				<c:if test="${n_id ne v.n_id}">
+					<option value="${v.n_id}">${v.nation}</option>
+				</c:if>
 			</c:forEach>
 			</select>
 		</form>

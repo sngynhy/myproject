@@ -33,6 +33,7 @@ public class BoardController {
 	@ModelAttribute("sidebarData")
 	public Model getSideBarData(Model model) {
 		List<CategoryVO> cateData = categoryService.getCategoryList();
+		System.out.println(cateData);
 		model.addAttribute("cateData", cateData);
 		List<NationVO> nationData = nationService.getNavtionList();
 		model.addAttribute("nationData", nationData);
@@ -53,7 +54,9 @@ public class BoardController {
 		List<UserBoardVO> datas = boardService.getBoardList(vo); // 게시글 전체 조회
 		model.addAttribute("datas", datas); // 정보 저장 - setAttribute의 역할
 		model.addAttribute("b_type", vo.getB_type());
-		model = getSideBarData(model);
+		model.addAttribute("cate_id", vo.getCate_id());
+		model.addAttribute("n_id", vo.getN_id());
+//		model = getSideBarData(model);
 		
 		return "getBoardList.jsp";
 	}
@@ -66,9 +69,14 @@ public class BoardController {
 	
 	@RequestMapping("/insertBoard.do")
 	public String insertBoard(UserBoardVO vo, Model model) {
-//		System.out.println(vo);
 		boardService.insertBoard(vo);
-		return "getBoardList.do?b_type=ask";
+		return "redirect:getBoardList.do?b_type=" + vo.getB_type() + "&cate_id=" + vo.getCate_id() + "&a_id=" + vo.getA_id() + "&n_id=" + vo.getN_id();
+	}
+	
+	@RequestMapping("/insertBoardTry.do")
+	public String insertTry(UserBoardVO vo, Model model) {
+		model.addAttribute("data", vo);
+		return "insertBoard.jsp";
 	}
 	
 	@RequestMapping("/updateboardtry.do")
@@ -80,13 +88,13 @@ public class BoardController {
 	@RequestMapping("/updateBoard.do")
 	public String updateBoard(UserBoardVO vo, Model model) {
 		boardService.updateBoard(vo);
-		return "getBoardList.do?b_type=ask";
+		return "redirect:getBoardList.do?b_type=" + vo.getB_type() + "&cate_id=" + vo.getCate_id() + "&a_id=" + vo.getA_id() + "&n_id=" + vo.getN_id();
 	}
 	
 	
 	@RequestMapping("/deleteBoard.do")
 	public String deleteBoard(UserBoardVO vo, Model model) throws IOException {
 		boardService.deleteBoard(vo);
-		return "getBoardList.do?b_type=ask";
+		return "redirect:getBoardList.do?b_type=" + vo.getB_type() + "&cate_id=" + vo.getCate_id() + "&a_id=" + vo.getA_id() + "&n_id=" + vo.getN_id();
 	}
 }

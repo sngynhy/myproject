@@ -43,6 +43,8 @@ public class SpringUserBoardDAO {
 	private JdbcTemplate jdbcTemplate;
 	
 	public int insertBoard(UserBoardVO vo) {
+//		System.out.println(vo);
+//		System.out.println("여기");
 		Object[] args = {vo.getId(), vo.getTitle(), vo.getContent(), vo.getB_type(), vo.getA_id(), vo.getN_id(), vo.getCate_id()};
 		return jdbcTemplate.update(insertSQL, args);
 	}
@@ -64,7 +66,7 @@ public class SpringUserBoardDAO {
 		int size = 0; // args 배열 길이
 		
 		if (vo.getB_type().equals("info")) { // 정보 공유 게시글
-			sql += getBoardListSQL + "AND CATE_ID = ?";
+			sql += getBoardListSQL + " AND CATE_ID = ?";
 			params.add(vo.getB_type());
 			params.add(vo.getCate_id());
 			if (vo.getKeyword() != null) {
@@ -91,7 +93,7 @@ public class SpringUserBoardDAO {
 				params.add("%"+vo.getKeyword()+"%");
 			}
 		} else if (vo.getB_type().equals("review")) { // 여행 후기 게시글
-			sql += getBoardListSQL + "AND N_ID = ?";
+			sql += getBoardListSQL + " AND N_ID = ?";
 			params.add(vo.getB_type());
 			params.add(vo.getN_id());
 			if (vo.getKeyword() != null) {
@@ -107,14 +109,15 @@ public class SpringUserBoardDAO {
 		}
 		
 		sql += " ORDER BY B_DATE DESC";
+		System.out.println(sql);
 		Object[] args = new Object[params.size()];
 		for (String temp : params) {
 			args[size++] = temp;
 		}
-		/*System.out.println(sql);
+		System.out.println(sql);
 		for(int i=0; i<args.length; i++) {
 			System.out.println(args[i]);
-		}*/
+		}
 		return jdbcTemplate.query(sql, args, new UserBoardRowMapper());
 	}
 

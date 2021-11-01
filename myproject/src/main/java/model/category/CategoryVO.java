@@ -17,4 +17,9 @@ public class CategoryVO {
 	public void setCategory(String category) {
 		this.category = category;
 	}
+	@Override
+	public String toString() {
+		return "CategoryVO [cate_id=" + cate_id + ", category=" + category + "]";
+	}
+	
 }

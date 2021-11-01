@@ -34,13 +34,36 @@
 						<!-- Section -->
 							<section style="padding-top: 35px;">
 								<header class="major">
-									<h3>자유 질문 게시판</h3>
+									<c:choose>
+										<c:when test="${data.b_type eq 'info'}">
+											<h3>정보 공유 게시판</h3>
+											<c:forEach var="v" items="${sidebarData.cateData}">
+												<c:if test="${data.cate_id eq v.cate_id}">
+													<h4 style="color: gray;">${v.category}</h4>
+												</c:if>
+											</c:forEach>
+										</c:when>
+										<c:when test="${data.b_type eq 'ask'}">
+											<h3>자유 질문 게시판</h3>
+										</c:when>
+										<c:when test="${data.b_type eq 'review'}">
+											<h3>여행 후기 게시판</h3>
+											<c:forEach var="v" items="${sidebarData.nationData}">
+												<c:if test="${data.n_id eq v.n_id}">
+													<h4 style="color: gray;">${v.nation}</h4>
+												</c:if>
+											</c:forEach>
+										</c:when>
+									</c:choose>
 								</header>
 								
 								<!-- 게시글 입력 폼 -->
 								<form method="post" action="insertBoard.do">
 									<input type="hidden" name="id" value="${sessionID}">
-									<input type="hidden" name="b_type" value="ask">
+									<input type="hidden" name="b_type" value="${data.b_type}">
+									<input type="hidden" name="cate_id" value="${data.cate_id}">
+									<input type="hidden" name="a_id" value="${data.a_id}">
+									<input type="hidden" name="n_id" value="${data.n_id}">
 										<!-- <h2>제목 : </h2> -->
 										<div class="row gtr-uniform">
 											<div class="col-12">
@@ -66,6 +89,16 @@
 			<script src="assets/js/main.js"></script>
 	</body>
 	<script>
+	function changeCateId(obj) {
+		var selectValue = obj.value;
+		/* console.log(selectValue); */
+		window.location.href="getBoardList.do?b_type=info&cate_id=" + selectValue;
+	}
+	function changeN_Id(obj) {
+		var selectValue = obj.value;
+		/* console.log(selectValue); */
+		window.location.href="getBoardList.do?b_type=review&n_id=" + selectValue;
+	}
     // 3. CKEditor5를 생성할 textarea 지정
     ClassicEditor
 	.create( document.querySelector('#editor') )
@@ -77,5 +110,6 @@
 	.catch( error => {
 		console.error( error );
 	} );
+    
     </script>
 </html>

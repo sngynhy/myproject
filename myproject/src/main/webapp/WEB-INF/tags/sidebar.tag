@@ -1,18 +1,12 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="mytag"%>
 <div id="sidebar">
 	<div class="inner">
-
-		<!-- Search -->
-		<section id="search" class="alt">
-			<form method="post" action="#">
-				<input type="text" name="query" id="query" placeholder="Search" />
-			</form>
-		</section>
-
+		
 		<!-- Menu -->
 		<nav id="menu">
-			<header class="major">
+			<header class="major" style="padding-top: 20px;">
 				<h2>Menu</h2>
 			</header>
 			<ul>		
@@ -47,11 +41,10 @@
 				aliquam facilisis ante interdum. Sed nulla amet lorem feugiat tempus
 				aliquam.</p>
 			<ul class="contact">
-				<li class="icon solid fa-envelope"><a href="#">information@untitled.tld</a></li>
-				<li class="icon solid fa-phone">(000) 000-0000</li>
-				<li class="icon solid fa-home">1234 Somewhere Road #8254<br />
-					Nashville, TN 00000-0000
-				</li>
+				<li class="icon solid fa-envelope"><a href="https://mail.google.com/mail">sngynhy@gmail.com</a></li>
+				<li class="icon solid fa-home"><a href="https://sngynhy.tistory.com">https://sngynhy.tistory.com/</a></li>
+				<li class="icon brands fa-github"><a href="https://github.com/sngynhy"><span class="label">https://github.com/sngynhy</span></a></li>
+				<li class="icon solid fa-phone">010-9259-3937</li>
 			</ul>
 		</section>
 

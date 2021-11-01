@@ -33,7 +33,27 @@
 							<!-- Section -->
 								<section style="padding-top: 35px;">
 									<header class="major">
-										<h3><a href="getBoardList.do?b_type=ask">자유 질문 게시판</a></h3>
+									<c:choose>
+										<c:when test="${data.b_type eq 'info'}">
+											<h3>정보 공유 게시판</h3>
+											<c:forEach var="v" items="${sidebarData.cateData}">
+												<c:if test="${data.cate_id eq v.cate_id}">
+													<h4 style="color: gray;">${v.category}</h4>
+												</c:if>
+											</c:forEach>
+										</c:when>
+										<c:when test="${data.b_type eq 'ask'}">
+											<h3>자유 질문 게시판</h3>
+										</c:when>
+										<c:when test="${data.b_type eq 'review'}">
+											<h3>여행 후기 게시판</h3>
+											<c:forEach var="v" items="${sidebarData.nationData}">
+												<c:if test="${data.n_id eq v.n_id}">
+													<h4 style="color: gray;">${v.nation}</h4>
+												</c:if>
+											</c:forEach>
+										</c:when>
+									</c:choose>
 									</header>
 									
 									<!-- 데이터 출력 -->
@@ -57,13 +77,24 @@
 									<hr class="major" />
 									<c:choose>
 										<c:when test="${data.id == sessionID}">
-											<ul class="actions">
+											<ul class="actions" style="float: right;">
 												<li><input type="button" value="수정" class="button small" onclick="location.href='updateboardtry.do?b_id=${data.b_id}'"/></li>
-												<li><input type="button" value="삭제" class="button small" onclick="location.href='deleteBoard.do?b_id=${data.b_id}'" /></li>
+												<li><input type="button" value="삭제" class="button small" onclick="deleteBoard('${data.b_id}', '${data.b_type}', '${data.cate_id}', '${data.a_id}', '${data.n_id}')" /></li>
 											</ul>
 										</c:when>
 										<c:when test="${!empty sessionID && data.id != sessionID}">
-											<a href="insertBoard.jsp" class="button" style="float: right;">글쓰기</a>
+										<ul class="actions" style="float: right;">
+											<c:if test="${data.b_type eq 'info'}">
+											<li><a href="insertBoardTry.do?b_type=info&cate_id=${cate_id}" class="button small" style="float: right;">글쓰기</a></li>
+											</c:if>
+											<c:if test="${data.b_type eq 'ask'}">
+												<td><a href="insertBoardTry.do?b_type=ask" class="button small" style="float: right;">글쓰기</a></td>
+											</c:if>
+											<c:if test="${data.b_type eq 'review'}">
+												<td><a href="insertBoardTry.do?b_type=review&a_id=${a_id}&n_id=${n_id}" class="button small" style="float: right;">글쓰기</a></td>
+											</c:if>
+											<li><a href="javascript:window.history.go(-1)" class="button small" style="float: right;">전체 목록</a></li>
+										</ul>
 										</c:when>
 									</c:choose>
 								</section>
@@ -82,4 +113,9 @@
 			<script src="assets/js/main.js"></script>
 
 	</body>
+	<script type="text/javascript">
+		function deleteBoard(b_id, b_type, cate_id, a_id, n_id) {
+			window.location.href="deleteBoard.do?b_id="+b_id+"&b_type="+b_type+"&cate_id="+cate_id+"&a_id="+a_id+"&n_id="+n_id;
+		}
+	</script>
 </html>
