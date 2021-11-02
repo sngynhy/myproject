@@ -29,5 +29,10 @@ hs_err_pid*
 
 
 
-src/main/java/model/common/JDBC.java
+/src/main/java/model/common/JDBC.java
+
+.classpath
+/target/
+
+
 # End of https://www.toptal.com/developers/gitignore/api/java
